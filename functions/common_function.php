@@ -15,15 +15,15 @@ function get_products() {
         $product_price = $row['price'];
         $product_image = $row['image'];
         echo "<div class='col-12 col-md-4 col-lg-3 mb-5'>
-        <a class='product-item' href='shop.php?add_to_cart=$product_id' name='cart'>
+        <div class='product-item'>
             <img src='./admin/uploaded_img/$product_image' class='img-fluid product-thumbnail'>
             <h3 class='product-title'>$product_name</h3>
             <strong class='product-price'>₹$product_price</strong>
 
             <span class='icon-cross'>
-            <img src='images/cross.svg' href='index.php' class='img-fluid'>
+            <a class='img-fluid' href='shop.php?add_to_cart&id=$product_id&price=$product_price' name='cart'><img src='images/cross.svg' class='img-fluid'></a>
             </span>
-        </a>
+        </div>
     </div> ";
     }
 }
@@ -54,8 +54,9 @@ function cart(){
     if(isset($_GET['add_to_cart'])){
         global $conn;
         $ip = getIPAddress();
-        $get_product_id = $_GET['add_to_cart'];
-        $select_query = "SELECT * FROM `cart` WHERE ip_address='$ip' AND id=$get_product_id";
+        $get_product_id = $_GET['id'];
+        $price = $_GET['price'];
+        $select_query = "SELECT * FROM `cart` WHERE ip_address='$ip' AND id=$get_product_id AND price=$price ";
         $result_query = mysqli_query($conn, $select_query);
         $num_of_rows = mysqli_num_rows($result_query);
 
@@ -64,7 +65,7 @@ function cart(){
             echo "<script>window.open('shop.php', '_self')</script>";
         }
         else{
-            $insert_query = "INSERT INTO `cart` (id, ip_address) values ($get_product_id, '$ip')";
+            $insert_query = "INSERT INTO `cart` (id, ip_address, price) values ($get_product_id, '$ip',$price)";
             $result_query = mysqli_query($conn, $insert_query);
             echo "<script>window.open('shop.php', '_self')</script>";
         }
