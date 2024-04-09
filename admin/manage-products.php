@@ -6,7 +6,9 @@ session_start();
 include '../connection.php';
 
 
-if(($_SESSION['admin_id']) OR ($_SESSION['admin_product_id']))
+// if(($_SESSION['admin_id']) OR ($_SESSION['admin_product_id']))
+$role = $_SESSION['role'];
+if($role == 'pm' OR $role == 'admin')
 {  
 
 
@@ -192,7 +194,7 @@ if(($_SESSION['admin_id']) OR ($_SESSION['admin_product_id']))
 
 }
 else{
-   header('location:product-manager/admin-login-product.php');
+   header('location:admin-login.php');
    }
 
 ?>

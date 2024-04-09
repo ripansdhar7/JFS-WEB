@@ -4,7 +4,9 @@ session_start();
 
 include '../connection.php';
 
-if(($_SESSION['admin_id']) OR ($_SESSION['admin_order_id']))
+// if(($_SESSION['admin_id']) OR ($_SESSION['admin_order_id']))
+$role = $_SESSION['role'];
+if($role == 'pm' OR $role == 'admin')
 {  
 
 
@@ -38,7 +40,7 @@ if(($_SESSION['admin_id']) OR ($_SESSION['admin_order_id']))
          <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
          <link href="../css/bootstrap.min.css" rel="stylesheet">
          <link href="style.css" rel="stylesheet">
-         <title>All orders</title>
+         <title>Order management</title>
          
       </head>
       <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark admin" arial-label="Furni navigation bar">
@@ -93,15 +95,6 @@ if(($_SESSION['admin_id']) OR ($_SESSION['admin_order_id']))
 
    </section>
 
-
-
-
-
-
-
-
-
-
    <!-- custom admin js file link  -->
    <script src="admin_script.js"></script>
 
@@ -112,7 +105,7 @@ if(($_SESSION['admin_id']) OR ($_SESSION['admin_order_id']))
 
 }
 else{
-   header('location:order-manager/admin-login-orders.php');
+   header('location:admin-login.php');
    }
 
 ?>

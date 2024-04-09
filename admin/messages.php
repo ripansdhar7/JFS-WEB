@@ -4,7 +4,9 @@ include '../connection.php';
 
 session_start();
 
-if(($_SESSION['admin_id']) OR ($_SESSION['admin_product_id']))
+// if(($_SESSION['admin_id']) OR ($_SESSION['admin_product_id']))
+$role = $_SESSION['role'];
+if($role == 'smm' OR $role == 'admin')
 {  
 
 if(isset($_GET['delete'])){
@@ -89,7 +91,7 @@ if(isset($_GET['delete'])){
 
 }
 else{
-   header('location:product-manager/admin-login-product.php');
+   header('location:admin-login.php');
    }
 
 ?>

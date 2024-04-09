@@ -1,10 +1,11 @@
 <?php
 session_start();
 
-include'../../connection.php';
+include '../../connection.php';
 
-if(!$_SESSION['admin_id'])
-   header('location:admin-login-main.php');
+$role = $_SESSION['role'];
+if($role == 'admin'){
+
 ?>
 
 <!doctype html>
@@ -21,7 +22,7 @@ if(!$_SESSION['admin_id'])
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 		<link href="../../css/bootstrap.min.css" rel="stylesheet">
 		<link href="../style.css" rel="stylesheet">
-		<title>Admin pannel</title>
+		<title>Admin panel</title>
 	</head>
     <body>
 		
@@ -88,21 +89,31 @@ if(!$_SESSION['admin_id'])
 
       <div class="box">
          <?php 
-            $select_users = mysqli_query($conn, "SELECT * FROM `users` ") or die('query failed');
+            $select_users = mysqli_query($conn, "SELECT * FROM `users` WHERE user_type='User' ") or die('query failed');
             $number_of_users = mysqli_num_rows($select_users);
          ?>
          <h3><?php echo $number_of_users; ?></h3>
          <p>Normal users</p>
       </div>
-
+      
       <div class="box">
          <?php 
-            $select_account = mysqli_query($conn, "SELECT * FROM `users`") or die('query failed');
+            $select_account = mysqli_query($conn, "SELECT * FROM `admin`  WHERE user_type='Admin'") or die('query failed');
             $number_of_account = mysqli_num_rows($select_account);
          ?>
          <h3><?php echo $number_of_account; ?></h3>
-         <p>Total accounts</p>
+         <p>Total admins</p>
       </div>
+
+
+      <!-- <div class="box">
+         <?php 
+            // $select_account = mysqli_query($conn, "SELECT * FROM `users`") or die('query failed');
+            // $number_of_account = mysqli_num_rows($select_account);
+         ?>
+         <h3><?php //echo $number_of_account; ?></h3>
+         <p>Total accounts</p>
+      </div> -->
 
       <div class="box">
          <?php 
@@ -133,3 +144,10 @@ if(!$_SESSION['admin_id'])
 
 </body>
 </html>   
+
+<?php }
+
+else{
+   header('location:../admin-login.php');
+   }
+?> 

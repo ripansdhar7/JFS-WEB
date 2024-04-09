@@ -1,3 +1,12 @@
+<?php
+@session_start();
+
+include '../../connection.php';
+
+$role = $_SESSION['role'];
+if($role == 'admin'){
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,7 +21,7 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 		<link href="../../css/bootstrap.min.css" rel="stylesheet">
 		<link href="../style.css" rel="stylesheet">
-		<title>Admin pannel</title>
+		<title>Admin panel</title>
 	</head>
     <body>
 		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark admin" arial-label="Furni navigation bar">
@@ -32,15 +41,21 @@
 						<li><a class="nav-link" href="../manage-products.php">Product area</a></li>
 						<li><a class="nav-link" href="../all-orders.php">All orders</a></li>
 						<li><a class="nav-link" href="../users-list.php">Users list</a></li>
-						<li><a class="nav-link" href="blogs-admin.html">Blogs</a></li>
+						<li><a class="nav-link" href="../blogs-admin.php">Blogs</a></li>
 						<li><a class="nav-link" href="../messages.php">Messages</a></li>
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						<li><a class="nav-link" href="admin-login-main.php"><img src="../../images/user.svg"></a></li>
+						<li><a class="nav-link" href="../admin-logout.php"><img src="../../images/user1.svg"></a></li>
 					</ul>
 				</div>
 			</div>
 				
 		</nav>
 		<!-- End Header/Navigation -->
+		<?php }
+
+else{
+   header('location:../admin-login.php');
+   }
+?> 
