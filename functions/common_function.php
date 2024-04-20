@@ -15,6 +15,8 @@ function get_products()
     $product_name = $row['name'];
     $product_price = $row['price'];
     $product_image = $row['image'];
+
+    if (isset($_SESSION ['user_id'])) {
     echo "<div class='col-12 col-md-4 col-lg-3 mb-5'>
         <div class='product-item'>
             <img src='./admin/uploaded_img/$product_image' class='img-fluid product-thumbnail'>
@@ -22,10 +24,25 @@ function get_products()
             <strong class='product-price'>₹$product_price</strong>
 
             <span class='icon-cross'>
-            <a class='img-fluid' href='shop.php?add_to_cart&id=$product_id&price=$product_price' name='cart'><img src='images/cross.svg' class='img-fluid'></a>
+           
+              <a class='img-fluid' href='shop.php?add_to_cart&id=$product_id&price=$product_price' name='cart'><img src='images/cross.svg' class='img-fluid'></a>
+
             </span>
         </div>
     </div> ";
+          } else {
+            echo "<div class='col-12 col-md-4 col-lg-3 mb-5'>
+            <div class='product-item'>
+                <img src='./admin/uploaded_img/$product_image' class='img-fluid product-thumbnail'>
+                <h3 class='product-title'>$product_name</h3>
+                <strong class='product-price'>₹$product_price</strong>
+    
+                <span class='icon-cross'>
+                  <a class='img-fluid' href='user-login.php'><img src='images/cross.svg' class='img-fluid'></a>
+                </span>
+            </div>
+        </div> ";
+          }
   }
 }
 
@@ -54,6 +71,7 @@ function cart()
 {
   if (isset($_GET['add_to_cart'])) {
     global $conn;
+    $user_id = $_SESSION['user_id'];
     $ip = getIPAddress();
     $get_product_id = $_GET['id'];
     $price = $_GET['price'];
@@ -65,7 +83,7 @@ function cart()
       echo "<script>alert('This item is already present in the cart')</script>";
       echo "<script>window.open('shop.php', '_self')</script>";
     } else {
-      $insert_query = "INSERT INTO `cart` (id, ip_address, price) values ($get_product_id, '$ip',$price)";
+      $insert_query = "INSERT INTO `cart` (id, user_id, ip_address, price) values ($get_product_id,'$user_id','$ip',$price)";
       $result_query = mysqli_query($conn, $insert_query);
       echo "<script>window.open('shop.php', '_self')</script>";
     }

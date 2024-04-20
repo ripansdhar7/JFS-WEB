@@ -5,7 +5,7 @@ session_start();
 include 'favicon.php';
 
 $user_id = $_SESSION['user_id'];
-$name = $_SESSION['name'];
+$name = $_SESSION['fname'];
 
 if (!isset($user_id)) {
   header('location:user-login.php');
@@ -81,10 +81,10 @@ if (!isset($user_id)) {
           <?php
           $ip = getIPAddress();
 
-          $get_user = "SELECT * FROM `users` WHERE user_ip='$ip' ";
-          $result = mysqli_query($conn, $get_user);
-          $run_query = mysqli_fetch_array($result);
-          $user_id = $run_query['id'];
+          // $get_user = "SELECT * FROM `users` WHERE user_ip='$ip' ";
+          // $result = mysqli_query($conn, $get_user);
+          // $run_query = mysqli_fetch_array($result);
+          // $user_id = $run_query['id'];
           ?>
 
           <a href="orders.php?user_id=<?php echo $user_id; ?>">NEXT</a>

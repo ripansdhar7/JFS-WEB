@@ -2,7 +2,6 @@
 
 include 'connection.php';
 session_start();
-// $loggedin = false;
 
 if (isset($_POST['login'])) {
 
@@ -20,24 +19,11 @@ if (isset($_POST['login'])) {
       $_SESSION['lname'] = $row['last_name'];
       $_SESSION['user_email'] = $row['email'];
       $_SESSION['user_id'] = $row['id'];
-      // $loggedin = true;
-      // echo "<script>alert('login successfull')</script>";		
+	
       header('location:index.php');
     } else {
       $message[] = 'incorrect email or password!';
     }
-
-    /*if($row['user_type'] == 'admin'){
-
-           $_SESSION['admin_name'] = $row['name'];
-           $_SESSION['admin_email'] = $row['email'];
-           $_SESSION['admin_id'] = $row['id'];
-           header('location:admin_page.php');
-
-          }elseif($row['user_type'] == 'user'){
-
-
-          }*/
 
   } else {
     $message[] = 'incorrect email or password!';

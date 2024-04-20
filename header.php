@@ -1,10 +1,8 @@
 <?php
 include 'connection.php';
 @session_start();
-
-
-
 ?>
+
 <!doctype html>
 <html lang="en">
 
@@ -54,7 +52,12 @@ include 'connection.php';
                 <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                     <?php
                     if (isset($_SESSION['user_id'])) {
-                        echo "<li><a class='nav-link' href='profile.php?edit_profile'><img src='images/user1.svg'></a></li>";
+                        $user_id = $_SESSION['user_id'];
+                        $select_users = mysqli_query($conn, "SELECT * FROM `users` WHERE id = $user_id") or die('query failed');
+                        if ($fetch_users = mysqli_fetch_assoc($select_users)) {
+                            $fetch_user = $fetch_users['id'];
+                            echo "<li><a class='nav-link' href='profile.php?edit_profile&user_id=$fetch_user'><img src='images/user1.svg'></a></li>";
+                        }
                     } else {
                         echo "<li><a class='nav-link' href='user-login.php'><img src='images/user1.svg'></a></li>";
                     }

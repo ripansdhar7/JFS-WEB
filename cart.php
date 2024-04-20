@@ -5,50 +5,11 @@ include 'functions/common_function.php';
 
 session_start();
 
-
-// $user_id = $_SESSION['user_id'];
-
-// if(!isset($user_id)){
-//    header('location:user-login.php');
-// }
-
-// if(isset($_POST['update_cart'])){
-//    //$cart_id = $_POST['cart_id'];
-//    $cart_quantity = $_POST['cart_quantity'];
-//    mysqli_query($conn, "UPDATE `cart` SET quantity = '$cart_quantity' WHERE id = '$cart_id'") or die('query failed');
-//    $message[] = 'cart quantity updated!';
-// }
-
-
-
-
-
-
 if (isset($_GET['delete'])) {
   $delete_id = $_GET['delete'];
   mysqli_query($conn, "DELETE FROM `cart` WHERE id = '$delete_id'") or die('query failed');
   header('location:cart.php');
 }
-
-// $ip = getIPAddress();
-// $cart_id = $_POST['cart_id'];
-// $cart = "SELECT * FROM `cart` WHERE ip_address='$ip' AND id = '$cart_id'";
-// $result = mysqli_query($conn, $cart);
-// while( $fetch = mysqli_fetch_assoc($result)){
-// 	$quantity = $fetch['quantity'];
-// 	$price = $fetch['price'];
-// }
-
-
-
-
-
-// if(isset($_GET['delete_all'])){
-//    mysqli_query($conn, "DELETE FROM `cart` WHERE ip_address = '$ip'") or die('query failed');
-//    header('location:cart.php');
-// }
-
-
 ?>
 
 <!doctype html>
@@ -98,10 +59,6 @@ if (isset($_GET['delete'])) {
 
   <div class="untree_co-section before-footer-section">
     <?php
-    // $grand_total = 0;
-    // $select_cart = mysqli_query($conn, "SELECT * FROM `cart` WHERE ip_address = '$ip'") or die('query failed');
-    // if(mysqli_num_rows($select_cart) > 0){    ?>
-    <?php
     global $conn;
     $ip = getIPAddress();
     $total = 0;
@@ -136,6 +93,7 @@ if (isset($_GET['delete'])) {
                   while ($row = mysqli_fetch_array($result)) {
                     $quantity = $row['quantity'];
                     $product_id = $row['id'];
+                    $_SESSION['productId'] = $product_id;
                     $select_products = "SELECT * FROM `products` WHERE id=' $product_id'";
                     $result_products = mysqli_query($conn, $select_products);
                     while ($fetch_cart = mysqli_fetch_array($result_products)) {
@@ -144,12 +102,6 @@ if (isset($_GET['delete'])) {
                       $product_title = $fetch_cart['name'];
                       $product_image = $fetch_cart['image'];
                       $product_values = array_sum($product_price);
-                      // 		$total += $product_values;
-                      // $_SESSION['quantity'] = $quantity;
-                      // $_SESSION['name'] = $product_title;
-                
-
-
                       ?>
 
                       <tr>
@@ -165,20 +117,37 @@ if (isset($_GET['delete'])) {
                           <?php echo $product_table ?>/-
                         </td>
                         <td>
-                          <div class="input-group d-flex align-items-center justify-self-center quantity-container"
+                          <!-- <div class="input-group d-flex align-items-center justify-self-center quantity-container"
                             style="max-width: 90px;">
-                            <!-- <div class="input-group-prepend">
-                          <button class="btn btn-outline-black decrease" type="button">&minus;</button>
-                        </div>
-                        <input type="text" class="form-control text-center quantity-amount" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                        <div class="input-group-append">
-                          <button class="btn btn-outline-black increase" type="button">&plus;</button>
-                        </div> -->
-
-                            <input type="number" name="qty" value="<?php echo $quantity; ?>" min="1"
+                            <input type="number" name="qty" value="" min="1"
                               class="input-group d-flex align-items-center justify-self-center quantity-container"
                               style="max-width: 90px; outline: none; border: 1px solid black; border-radius: 5px;" required>
-                            <input type="hidden" name="cart_id" value="<?php echo $fetch_cart['id']; ?>">
+                            <input type="hidden" name="cart_id" value="">
+                          </div> -->
+
+                          <!-- <div class="input-group " style="width: 10rem;">
+                            <div class="input-group-prepend">
+                              <button class="input-group-text">-</button>
+                            </div>
+                            <input type="text" class="form-control mx-1" aria-label="Amount (to the nearest dollar)" style="height: 2.4rem;">
+                            <div class="input-group-append">
+                              <button class="input-group-text">+</button>
+                            </div>
+                          </div> -->
+
+                          <div class="input-group mx-auto d-flex align-items-center quantity-container qtyBox"
+                            style="max-width: 120px;">
+                            <input type="hidden" name="cart_id" value="<?php echo $product_id; ?>" class="prodId">
+                            <div class="input-group-prepend">
+                              <button class="btn btn-outline-black decrease" type="button" name="set-qty">&minus;</button>
+                              <!-- <input type="submit" class="btn btn-outline-black decrease" type="button" name="set-qty" value="-"> -->
+                            </div>
+                            <input type="text" class="form-control text-center quantity-amount qty"
+                              value="<?php echo $quantity; ?>" placeholder="" aria-label="Example text with button addon"
+                              aria-describedby="button-addon1" name="input-qty">
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-black increase" type="button" name="set-qty">&plus;</button>
+                            </div>
                           </div>
                         </td>
 
@@ -196,17 +165,12 @@ if (isset($_GET['delete'])) {
                     $ip = getIPAddress();
                     if (isset($_POST['update_cart'])) {
                       $cart_id = $_POST['cart_id'];
-                      $quantities = $_POST['qty'];
-                      $update_cart = " UPDATE `cart` SET quantity=$quantities WHERE id='$cart_id' AND ip_address='$ip'";
+                      $quantities = $_POST['input-qty'];
+                      $update_cart = " UPDATE `cart` SET quantity=$quantities WHERE id=$cart_id AND ip_address='$ip'";
                       $result_products_quantity = mysqli_query($conn, $update_cart);
-                      // $total = $total*$quantities;																						
                     }
                     $total += $sub_total;
-                    // $_SESSION['total'] = $total;
-                    // $_SESSION['subtotal'] = $sub_total;
                   }
-                  //$grand_total += $sub_total;} 
-                  // echo $p_quantity;
                   ?>
               </tbody>
               </table>
@@ -219,8 +183,6 @@ if (isset($_GET['delete'])) {
             <div class="col-md-6">
               <div class="row mb-5 d-flex flex-column">
                 <div class="col-md-6 mb-3 ">
-
-
 
                   <input type="submit" value='Update Cart' class='btn btn-black btn-med btn-block' name='update_cart'>
                 </div>
@@ -281,6 +243,58 @@ if (isset($_GET['delete'])) {
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/tiny-slider.js"></script>
   <script src="js/custom.js"></script>
+
+  <!-- <script>
+    $(document).ready(function () {
+
+      $(document).on('click', '.increase', function () {
+
+        var $quantityInput = $(this).closest('.qtyBox').find('.qty');
+        var $productId = $(this).closest('.qtyBox').find('.prodId').val();
+        var currentValue = parseInt($quantityInput.val());
+
+        if (!isNaN(currentValue)) {
+          var qtyVal = currentValue + 1;
+          $quantityInput.val(qtyVal);
+          quantityIncDec(productId, qtyVal);
+        }
+      });
+
+      $(document).on('click', '.decrease', function () {
+
+        var $quantityInput = $(this).closest('.qtyBox').find('.qty');
+        var $productId = $(this).closest('.qtyBox').find('.prodId').val();
+        var currentValue = parseInt($quantityInput.val());
+
+        if (!isNaN(currentValue) && currentValue > 1) {
+          var qtyVal = currentValue - 1;
+          $quantityInput.val(qtyVal);
+          quantityIncDec(productId, qtyVal);
+        }
+      });
+
+      function quantityIncDec(prodId, qty) {
+        $.ajax({
+          type: "POST",
+          url: "orders-code.php",
+          data: {
+            'productIncDec': true,
+            'product_id': prodId,
+            'quantity': qty
+          },
+
+          success: function (response) {
+            var res = JSON.parse(response);
+
+            if (response.status == 200) {
+              window.location.reload();
+            }
+          }
+        });
+      }
+    });
+
+  </script> -->
 </body>
 
 </html>

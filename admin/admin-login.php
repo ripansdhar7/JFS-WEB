@@ -29,7 +29,7 @@ if (isset($_POST['login'])) {
             $fetch = mysqli_fetch_assoc($query);
             if ($fetch['role'] == 'admin') {
             
-                header('<location:admin-centrl/admin-dashboard.php');}
+                header('location:admin-central/admin-dashboard.php');}
 
                 
                 else if($fetch['role'] == 'smm') {

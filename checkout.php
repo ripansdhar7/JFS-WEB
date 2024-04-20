@@ -9,15 +9,6 @@ $user_id = $_SESSION['user_id'];
 if (!isset($user_id)) {
   header('location:user-login.php');
 }
-// else{
-//  	echo "<script>window.open('thankyou.php','_self')</script>";
-// }
-
-
-
-// if(!isset($_SESSION['user_id'])){
-// 	header ('user-login.php');
-// }
 ?>
 
 <!doctype html>
@@ -62,56 +53,35 @@ if (!isset($user_id)) {
   </div>
   <!-- End Hero Section -->
 
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
   <div class="untree_co-section">
     <form action="" method="post">
       <div class="container">
         <div class="row mb-5">
-          <!-- <div class="col-md-12">
-          <div class="border p-4 rounded" role="alert">
-          Returning customer? <a href="#">Click here</a> to login
-          </div>
-        </div> -->
         </div>
         <div class="row">
           <div class="col-md-6 mb-5 mb-md-0">
             <h2 class="h3 mb-3 text-black">Billing Details</h2>
             <div class="p-3 p-lg-5 border bg-white">
-              <!-- <div class="form-group">
-            <label for="c_country" class="text-black">Country <span class="text-danger">*</span></label>
-            <select id="c_country" class="form-control">
-            <option value="1">Select a country</option>    
-            <option value="2">bangladesh</option>    
-            <option value="3">Algeria</option>    
-            <option value="4">Afghanistan</option>    
-            <option value="5">Ghana</option>    
-            <option value="6">Albania</option>    
-            <option value="7">Bahrain</option>    
-            <option value="8">Colombia</option>    
-            <option value="9">India</option>    
-            </select>
-          </div> -->
               <div class="form-group row">
                 <div class="col-md-6">
                   <label for="c_fname" class="text-black">First Name <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="c_fname" name="c_fname">
+                  <input type="text" class="form-control" id="fname" name="fname" required>
                 </div>
+
                 <div class="col-md-6">
                   <label for="c_lname" class="text-black">Last Name <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="c_lname" name="c_lname">
+                  <input type="text" class="form-control" id="lname" name="lname" required>
                 </div>
               </div>
-
-              <!-- <div class="form-group row">
-            <div class="col-md-12">
-            <label for="c_companyname" class="text-black">Company Name </label>
-            <input type="text" class="form-control" id="c_companyname" name="c_companyname">
-            </div>
-          </div> -->
 
               <div class="form-group row">
                 <div class="col-md-12">
                   <label for="c_address" class="text-black">Address <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="c_address" name="c_address" placeholder="Street address">
+                  <input type="text" class="form-control" id="address" name="address" placeholder="Street address"
+                    required>
                 </div>
               </div>
 
@@ -121,13 +91,12 @@ if (!isset($user_id)) {
 
               <div class="form-group row">
                 <div class="col-md-6">
-                  <label for="c_state_country" class="text-black">State / Country <span
-                      class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="c_state_country" name="c_state_country">
+                  <label for="c_state_country" class="text-black">State<span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="state" name="state" required>
                 </div>
                 <div class="col-md-6">
                   <label for="c_postal_zip" class="text-black">Posta / Zip <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="c_postal_zip" name="c_postal_zip">
+                  <input type="text" class="form-control" id="zip" name="zip" required>
                 </div>
               </div>
 
@@ -135,113 +104,15 @@ if (!isset($user_id)) {
                 <div class="col-md-6">
                   <label for="c_email_address" class="text-black">Email Address <span
                       class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="c_email_address" name="c_email_address">
+                  <input type="text" class="form-control" id="email" name="email" required>
                 </div>
                 <div class="col-md-6">
                   <label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="c_phone" name="c_phone" placeholder="Phone Number">
+                  <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number"
+                    maxlength="10" required>
                 </div>
               </div>
 
-              <!-- <div class="form-group">
-            <label for="c_create_account" class="text-black" data-bs-toggle="collapse" href="#create_an_account" role="button" aria-expanded="false" aria-controls="create_an_account"><input type="checkbox" value="1" id="c_create_account"> Create an account?</label>
-            <div class="collapse" id="create_an_account">
-            <div class="py-2 mb-4">
-              <p class="mb-3">Create an account by entering the information below. If you are a returning customer please login at the top of the page.</p>
-              <div class="form-group">
-              <label for="c_account_password" class="text-black">Account Password</label>
-              <input type="email" class="form-control" id="c_account_password" name="c_account_password" placeholder="">
-              </div>
-            </div>
-            </div>
-          </div> -->
-
-
-              <div class="form-group">
-                <label for="c_ship_different_address" class="text-black" data-bs-toggle="collapse"
-                  href="#ship_different_address" role="button" aria-expanded="false"
-                  aria-controls="ship_different_address"><input type="checkbox" value="1" id="c_ship_different_address">
-                  Ship To A Different Address?</label>
-                <div class="collapse" id="ship_different_address">
-                  <div class="py-2">
-
-                    <!-- <div class="form-group">
-              <label for="c_diff_country" class="text-black">Country <span class="text-danger">*</span></label>
-              <select id="c_diff_country" class="form-control">
-                <option value="1">Select a country</option>    
-                <option value="2">bangladesh</option>    
-                <option value="3">Algeria</option>    
-                <option value="4">Afghanistan</option>    
-                <option value="5">Ghana</option>    
-                <option value="6">Albania</option>    
-                <option value="7">Bahrain</option>    
-                <option value="8">Colombia</option>    
-                <option value="9">India</option>    
-              </select>
-              </div> -->
-
-
-                    <div class="form-group row">
-                      <div class="col-md-6">
-                        <label for="c_diff_fname" class="text-black">First Name <span
-                            class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="c_diff_fname" name="c_diff_fname">
-                      </div>
-                      <div class="col-md-6">
-                        <label for="c_diff_lname" class="text-black">Last Name <span
-                            class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="c_diff_lname" name="c_diff_lname">
-                      </div>
-                    </div>
-
-                    <!-- <div class="form-group row">
-              <div class="col-md-12">
-                <label for="c_diff_companyname" class="text-black">Company Name </label>
-                <input type="text" class="form-control" id="c_diff_companyname" name="c_diff_companyname">
-              </div>
-              </div> -->
-
-                    <div class="form-group row  mb-3">
-                      <div class="col-md-12">
-                        <label for="c_diff_address" class="text-black">Address <span
-                            class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="c_diff_address" name="c_diff_address"
-                          placeholder="Street address">
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <input type="text" class="form-control" placeholder="Apartment, suite, unit etc. (optional)">
-                    </div>
-
-                    <div class="form-group row">
-                      <div class="col-md-6">
-                        <label for="c_diff_state_country" class="text-black">State / Country
-                          <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="c_diff_state_country" name="c_diff_state_country">
-                      </div>
-                      <div class="col-md-6">
-                        <label for="c_diff_postal_zip" class="text-black">Posta / Zip <span
-                            class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="c_diff_postal_zip" name="c_diff_postal_zip">
-                      </div>
-                    </div>
-
-                    <div class="form-group row mb-5">
-                      <div class="col-md-6">
-                        <label for="c_diff_email_address" class="text-black">Email Address <span
-                            class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="c_diff_email_address" name="c_diff_email_address">
-                      </div>
-                      <div class="col-md-6">
-                        <label for="c_diff_phone" class="text-black">Phone <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="c_diff_phone" name="c_diff_phone"
-                          placeholder="Phone Number">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div class="form-group">
                 <label for="c_order_notes" class="text-black">Order Notes</label>
                 <textarea name="c_order_notes" id="c_order_notes" cols="30" rows="5" class="form-control"
@@ -249,151 +120,85 @@ if (!isset($user_id)) {
               </div>
             </div>
           </div>
-    </form>
-    <div class="col-md-6">
-
-      <!-- <div class="row mb-5">
-          <div class="col-md-12">
-            <h2 class="h3 mb-3 text-black">Coupon Code</h2>
-            <div class="p-3 p-lg-5 border bg-white">
-
-            <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
-            <div class="input-group w-75 couponcode-wrap">
-              <input type="text" class="form-control me-2" id="c_code" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">
-              <div class="input-group-append">
-              <button class="btn btn-black btn-sm" type="button" id="button-addon2">Apply</button>
-              </div>
-            </div>
-
-            </div>
-          </div>
-          </div> -->
-
-      <div class="row mb-5">
-        <div class="col-md-12">
-          <h2 class="h3 mb-3 text-black">Your Order</h2>
-          <form action="" method="post">
-            <?php
-            global $conn;
-            $ip = getIPAddress();
-            $total_p = 0;
-            $cart_ip = "SELECT * FROM `cart` WHERE ip_address='$ip'";
-            $results = mysqli_query($conn, $cart_ip);
+          <div class="col-md-6">
+            <div class="row mb-5">
+              <div class="col-md-12">
+                <h2 class="h3 mb-3 text-black">Your Order</h2>
+                <?php
+                global $conn;
+                $ip = getIPAddress();
+                $total_p = 0;
+                $cart_ip = "SELECT * FROM `cart` WHERE ip_address='$ip'";
+                $results = mysqli_query($conn, $cart_ip);
 
 
-            if (mysqli_num_rows($results) > 0) {
+                if (mysqli_num_rows($results) > 0) {
 
-              ?>
-              <div class="p-3 p-lg-5 border bg-white">
-                <table class="table site-block-order-table mb-5">
-                  <thead>
-                    <th>Product</th>
-                    <th>Total</th>
-                  </thead>
-                  <tbody>
-                    <?php
-                    while ($row_p = mysqli_fetch_array($results)) {
-                      $quantity_p = $row_p['quantity'];
-                      $product = $row_p['id'];
-                      $select_product = "SELECT * FROM `products` WHERE id=' $product'";
-                      $result_product = mysqli_query($conn, $select_product);
-                      while ($fetch = mysqli_fetch_array($result_product)) {
-                        $price = array($fetch['price']);
-                        $table = $fetch['price'];
-                        $title = $fetch['name'];
-                        $image = $fetch['image'];
-                        $values = array_sum($price);
-                        $s_total = $quantity_p * $table;
-                        $total_p += $s_total;
-                        ?>
-
+                  ?>
+                  <div class="p-3 p-lg-5 border bg-white">
+                    <table class="table site-block-order-table mb-5">
+                      <thead>
+                        <th>Product</th>
+                        <th>Total</th>
+                      </thead>
+                      <tbody>
                         <?php
-                        echo "<tr>
+                        while ($row_p = mysqli_fetch_array($results)) {
+                          $quantity_p = $row_p['quantity'];
+                          $product = $row_p['id'];
+                          $select_product = "SELECT * FROM `products` WHERE id=' $product'";
+                          $result_product = mysqli_query($conn, $select_product);
+                          while ($fetch = mysqli_fetch_array($result_product)) {
+                            $price = array($fetch['price']);
+                            $table = $fetch['price'];
+                            $title = $fetch['name'];
+                            $image = $fetch['image'];
+                            $values = array_sum($price);
+                            $s_total = $quantity_p * $table;
+                            $total_p += $s_total;
+                            $_SESSION['g_total'] = $total_p;
+                            ?>
+
+                            <?php
+                            echo "<tr>
 														<td>$title<strong class='mx-2'>x</strong>$quantity_p</td>
 														<td>₹$s_total</td>
 													</tr>";
-                      }
-                    } ?>
+                          }
+                        } ?>
 
-                    <!-- <tr>
-                <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
-                <td class="text-black">$350.00</td>
-              </tr> -->
+                        <tr>
+                          <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
+                          <td class="text-black font-weight-bold"><strong>₹
+                              <?php echo $total_p; ?>
+                            </strong></td>
+                        </tr>
 
-                    <tr>
-                      <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-                      <td class="text-black font-weight-bold"><strong>₹
-                          <?php echo $total_p; ?>
-                        </strong></td>
-                    </tr>
+                      <?php } ?>
+                    </tbody>
+                  </table>
 
-                  <?php } ?>
-                </tbody>
-              </table>
+                  <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
+                  <div class="input-group w-75 couponcode-wrap mb-5">
+                    <input type="text" class="form-control me-2" id="c_code" placeholder="Coupon Code"
+                      aria-label="Coupon Code" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-black btn-sm" type="button" id="button-addon2">Apply</button>
+                    </div>
+                  </div>
 
-
-              <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
-              <div class="input-group w-75 couponcode-wrap mb-5">
-                <input type="text" class="form-control me-2" id="c_code" placeholder="Coupon Code"
-                  aria-label="Coupon Code" aria-describedby="button-addon2">
-                <div class="input-group-append">
-                  <button class="btn btn-black btn-sm" type="button" id="button-addon2">Apply</button>
-                </div>
-              </div>
-
-
-
-              <!-- <div class="border p-3 mb-3">
-                <h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse" href="#collapsebank"
-                    role="button" aria-expanded="false" aria-controls="collapsebank">Direct Bank
-                    Transfer</a></h3>
-
-                <div class="collapse" id="collapsebank">
-                  <div class="py-2">
-                    <p class="mb-0">Make your payment directly into our bank account. Please use
-                      your Order ID as the payment reference. Your order won’t be shipped until
-                      the funds have cleared in our account.</p>
+                  <div class="form-group">
+                    <!-- <a href="payment.php" class="btn btn-black btn-med py-3 btn-block">Pay now</a> -->
+                    <!-- <button id="rzp-button1" class="btn btn-black btn-med py-3 btn-block">Pay now</button> -->
+                    <input type="button" class="btn btn-black btn-med py-3 btn-block" id="pay" name="pay"
+                      value="Pay now" onclick="pay_now()">
+                    <!-- onclick="window.location='thankyou.php'">Place Order-->
                   </div>
                 </div>
-              </div>
-
-              <div class="border p-3 mb-3">
-                <h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse" href="#collapsecheque"
-                    role="button" aria-expanded="false" aria-controls="collapsecheque">Cheque
-                    Payment</a></h3>
-
-                <div class="collapse" id="collapsecheque">
-                  <div class="py-2">
-                    <p class="mb-0">Make your payment directly into our bank account. Please use
-                      your Order ID as the payment reference. Your order won’t be shipped until
-                      the funds have cleared in our account.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="border p-3 mb-5">
-                <h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse" href="#collapsepaypal"
-                    role="button" aria-expanded="false" aria-controls="collapsepaypal">Paypal</a>
-                </h3>
-
-                <div class="collapse" id="collapsepaypal">
-                  <div class="py-2">
-                    <p class="mb-0">Make your payment directly into our bank account. Please use
-                      your Order ID as the payment reference. Your order won’t be shipped until
-                      the funds have cleared in our account.</p>
-                  </div>
-                </div>
-              </div> -->
-
-              <div class="form-group">
-                <a href="payment.php" class="btn btn-black btn-med py-3 btn-block">Pay now</a>
-                <!-- onclick="window.location='thankyou.php'">Place Order-->
               </div>
             </div>
-          </form>
-        </div>
-      </div>
-    </div>
+          </div>
+    </form>
   </div>
 
   <!-- </form> -->
@@ -404,6 +209,46 @@ if (!isset($user_id)) {
   include 'footer.php';
   ?>
 
+
+  <script>
+    function pay_now() {
+      var fname = jQuery('#fname').val();
+      var lname = jQuery('#lname').val();
+      var address = jQuery('#address').val();
+      var state = jQuery('#state').val();
+      var zip = jQuery('#zip').val();
+      var email = jQuery('#email').val();
+      var phone = jQuery('#phone').val();
+
+      jQuery.ajax({
+        type: 'post',
+        url: 'payment_process.php',
+        data: "&fname=" + fname + "&lname=" + lname + "&address=" + address + "&state=" + state + "&zip=" + zip + "&email=" + email + "&phone=" + phone ,
+        success: function (result) {
+          var options = {
+            "key": "rzp_test_rda5tZeYsvjVsy",
+            "amount": "<?php echo $total_p * 100; ?>",
+            "currency": "INR",
+            "name": "Furni",
+            "description": "Test Transaction",
+            "image": "favicon.png",
+            "handler": function (response) {
+              jQuery.ajax({
+                type: 'post',
+                url: 'payment_process.php',
+                data: "payment_id=" + response.razorpay_payment_id,
+                success: function (result) {
+                  window.location.href = "orders.php";
+                }
+              });
+            }
+          };
+          var rzp1 = new Razorpay(options);
+          rzp1.open();
+        }
+      });
+    }
+  </script>
 
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/tiny-slider.js"></script>
